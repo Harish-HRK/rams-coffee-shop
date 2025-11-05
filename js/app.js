@@ -113,8 +113,9 @@
       if(!hasItems) els.cart.classList.remove('open');
     }
     if(els.cartToggle){
-      els.cartToggle.style.display = hasItems ? 'flex' : 'none';
-      els.cartToggle.setAttribute('aria-expanded', hasItems && els.cart && els.cart.classList.contains('open') ? 'true' : 'false');
+      const isOpen = els.cart && els.cart.classList.contains('open');
+      els.cartToggle.style.display = hasItems ? (isOpen ? 'none' : 'flex') : 'none';
+      els.cartToggle.setAttribute('aria-expanded', hasItems && isOpen ? 'true' : 'false');
     }
   }
 
@@ -235,6 +236,8 @@
     els.cartToggle.addEventListener('click', ()=>{
       const isOpen = els.cart.classList.toggle('open');
       els.cartToggle.setAttribute('aria-expanded', String(isOpen));
+      // hide the floating toggle when drawer is open
+      els.cartToggle.style.display = isOpen ? 'none' : 'flex';
     });
   }
 
