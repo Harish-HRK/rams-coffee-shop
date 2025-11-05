@@ -105,6 +105,17 @@
     els.subtotal.textContent = money(t.subtotal);
     els.total.textContent = money(t.total);
     if(els.toggleSum) els.toggleSum.textContent = money(t.total);
+
+    // Show/hide cart UI based on item count
+    const hasItems = cart.length > 0;
+    if(els.cart){
+      els.cart.hidden = !hasItems;
+      if(!hasItems) els.cart.classList.remove('open');
+    }
+    if(els.cartToggle){
+      els.cartToggle.style.display = hasItems ? 'flex' : 'none';
+      els.cartToggle.setAttribute('aria-expanded', hasItems && els.cart && els.cart.classList.contains('open') ? 'true' : 'false');
+    }
   }
 
   function openPay(){
@@ -139,13 +150,42 @@
     els.receiptOrderId.textContent = orderId;
   }
 
-  function printBill(){
+  async function printBill(){
     const t = totals();
     if(t.total <= 0) return;
     const orderId = saveOrder();
     renderReceipt(orderId);
     els.receipt.hidden = false;
-    window.print();
+
+    const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || window.matchMedia('(max-width: 920px)').matches;
+    if(isMobile && window.jspdf && window.html2canvas){
+      try{
+        const node = document.querySelector('#receipt .receipt-inner');
+        const canvas = await window.html2canvas(node, { scale: 2, useCORS: true, backgroundColor: '#ffffff' });
+        const imgData = canvas.toDataURL('image/png');
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF('p','mm','a4');
+        const pageWidth = pdf.internal.pageSize.getWidth();
+        const pageHeight = pdf.internal.pageSize.getHeight();
+        const imgWidth = pageWidth - 20; // margins
+        const imgHeight = canvas.height * imgWidth / canvas.width;
+        let y = 10;
+        if(imgHeight > pageHeight - 20){
+          // scale to fit height if needed
+          const scaledWidth = (pageHeight - 20) * canvas.width / canvas.height;
+          pdf.addImage(imgData, 'PNG', (pageWidth - scaledWidth)/2, 10, scaledWidth, pageHeight - 20, undefined, 'FAST');
+        } else {
+          pdf.addImage(imgData, 'PNG', 10, y, imgWidth, imgHeight, undefined, 'FAST');
+        }
+        pdf.save(`Rams_Receipt_${orderId}.pdf`);
+      } catch(e){
+        // fallback to print if PDF generation fails
+        window.print();
+      }
+    } else {
+      window.print();
+    }
+
     els.receipt.hidden = true;
     clearCart();
   }

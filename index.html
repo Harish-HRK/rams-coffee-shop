@@ -33,7 +33,7 @@
       <div id="menuGrid" class="menu-grid" aria-live="polite"></div>
     </section>
 
-    <aside id="cart" class="cart-section" aria-label="Cart and billing">
+    <aside id="cart" class="cart-section" aria-label="Cart and billing" hidden>
       <h2>Cart</h2>
       <div id="cartItems" class="cart-items"></div>
       <div class="totals">
@@ -42,7 +42,7 @@
       </div>
       <div class="actions">
         <button id="payNowBtn" class="btn primary">Pay Now</button>
-        <button id="printBtn" class="btn">Print Bill</button>
+        <button id="printBtn" class="btn">Print / Download</button>
         <button id="clearBtn" class="btn danger">Clear Cart</button>
       </div>
     </aside>
@@ -80,6 +80,8 @@
   </section>
 
   <script src="js/storage.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
   <script src="js/app.js"></script>
   <noscript>This app requires JavaScript enabled.</noscript>
 </body>
