@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin • Rams Coffee Shop</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="app-header">
+    <h1>Admin</h1>
+    <nav class="top-nav">
+      <a href="index.html" class="admin-link" aria-label="Back to shop">Back to Shop</a>
+    </nav>
+  </header>
+
+  <main class="admin-layout">
+    <section class="panel">
+      <h2>Manage Menu</h2>
+      <div class="toolbar">
+        <input id="search" type="search" placeholder="Search items..." />
+        <select id="filterCategory">
+          <option value="">All Categories</option>
+          <option>Tea</option>
+          <option>Coffee</option>
+          <option>Fresh Juice</option>
+          <option>Snacks</option>
+          <option>Herbal Soups</option>
+          <option>Ice Cream</option>
+        </select>
+        <button id="newItemBtn" class="btn primary">New Item</button>
+      </div>
+      <div id="menuTable" class="table"></div>
+    </section>
+
+    <section class="panel">
+      <h2>Settings</h2>
+      <form id="settingsForm" class="settings-form">
+        <div class="field">
+          <label>Shop Name</label>
+          <input id="shopNameInput" type="text" placeholder="Rams Coffee Shop" />
+        </div>
+        <div class="field">
+          <label>Shop Address</label>
+          <input id="addressInput" type="text" placeholder="Street, City" />
+        </div>
+        <div class="field">
+          <label>Phone</label>
+          <input id="phoneInput" type="text" placeholder="+91 98765 43210" />
+        </div>
+        <div class="field">
+          <label>Currency Symbol</label>
+          <input id="currencyInput" type="text" placeholder="₹" />
+        </div>
+        <div class="field">
+          <label>Payment QR Image URL</label>
+          <input id="qrInput" type="text" placeholder="assets/images/payment-qr.png" />
+        </div>
+        <button class="btn">Save Settings</button>
+      </form>
+    </section>
+
+    <section class="panel">
+      <h2>Monthly Sales Report</h2>
+      <div class="toolbar">
+        <input id="reportMonth" type="month" />
+        <button id="runReport" class="btn">Run</button>
+        <button id="exportCsv" class="btn">Export CSV</button>
+      </div>
+      <div id="reportSummary" class="report"></div>
+      <div id="reportTopItems" class="report"></div>
+    </section>
+
+    <section class="panel">
+      <h2>Daily Sales Report</h2>
+      <div class="toolbar">
+        <input id="reportDate" type="date" />
+        <button id="runDailyReport" class="btn">Run</button>
+        <button id="exportDailyCsv" class="btn">Export CSV</button>
+      </div>
+      <div id="dailySummary" class="report"></div>
+      <div id="dailyTopItems" class="report"></div>
+    </section>
+  </main>
+
+  <!-- Item Modal -->
+  <div id="itemModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="itemTitle" hidden>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="itemTitle">New Item</h3>
+        <button id="closeItemModal" class="icon-btn" aria-label="Close">×</button>
+      </div>
+      <div class="modal-body">
+        <form id="itemForm" class="item-form">
+          <div class="field">
+            <label>Name</label>
+            <input id="itemName" type="text" required />
+          </div>
+          <div class="field">
+            <label>Category</label>
+            <select id="itemCategory" required>
+              <option>Tea</option>
+              <option>Coffee</option>
+              <option>Fresh Juice</option>
+              <option>Snacks</option>
+              <option>Herbal Soups</option>
+              <option>Ice Cream</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Price</label>
+            <input id="itemPrice" type="number" min="0" step="0.01" required />
+          </div>
+          <div class="field">
+            <label>Image URL</label>
+            <div style="display:flex; gap:8px; align-items:center;">
+              <input id="itemImage" type="text" placeholder="https://source.unsplash.com/600x400/?coffee" style="flex:1" />
+              <button type="button" id="suggestImage" class="btn small">Suggest image</button>
+            </div>
+          </div>
+          <div class="field inline">
+            <label>
+              <input id="itemAvailable" type="checkbox" checked /> Available
+            </label>
+          </div>
+          <div class="actions end">
+            <button class="btn">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/storage.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+<footer class="footer">
+  <p>© <span id="year"></span> Rams Coffee Shop</p>
+  </footer>
+</html>
+
+
